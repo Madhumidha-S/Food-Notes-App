@@ -1,5 +1,6 @@
 package com.example.foodnoteapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,6 +35,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,17 +47,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FoodNote()
+            TextField()
         }
     }
 }
 
 @Composable
 fun FAB() {
+
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(14.dp)) {
         FloatingActionButton(
-            onClick = { /* Action to be Performed */ },
+            onClick = {/*TODO*/},
             Modifier
                 .background(Color(0xFF74C931), CircleShape,)
                 .align(Alignment.BottomEnd)
