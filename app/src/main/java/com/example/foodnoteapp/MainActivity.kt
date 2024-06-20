@@ -1,5 +1,6 @@
 package com.example.foodnoteapp
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,10 +29,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,36 +49,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FoodNote()
-            TextField()
+            Tab()
         }
     }
 }
 
-@Composable
-fun FAB() {
-
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(14.dp)) {
-        FloatingActionButton(
-            onClick = {/*TODO*/},
-            Modifier
-                .background(Color(0xFF74C931), CircleShape,)
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            contentColor = Color(0xFF74C931),
-            shape = CircleShape,
-            containerColor = Color.White,
-        ) {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = null)
-        }
-    }
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Tab(){
+    val context = LocalContext.current
+    val activity = context as? Activity
+
     Column (modifier = Modifier.padding(PaddingValues(10.dp))){
         val pagerState = rememberPagerState (
             pageCount = { 2 }
@@ -140,26 +125,29 @@ fun Tab(){
             state = pagerState,
             userScrollEnabled = false
         ) {
-                page ->
-            Column (
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ){
-                Text(text = "Page: $page")
+            if (pagerState.currentPage == 0)
+            {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(14.dp)
+                ) {
+                    FloatingActionButton(
+                        onClick = {
+                                  context.startActivity(Intent(context,AddItem::class.java))
+                                  activity?.finish()
+                        },
+                        Modifier
+                            .background(Color(0xFF74C931), CircleShape,)
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp),
+                        contentColor = Color(0xFF74C931),
+                        shape = CircleShape,
+                        containerColor = Color.White,
+                    ) {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = null)
+                    }
+                }
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun GreetingPreview() {
-        FoodNote()
-}
-
-@Composable
-fun FoodNote(){
-    FAB()
-    Tab()
 }

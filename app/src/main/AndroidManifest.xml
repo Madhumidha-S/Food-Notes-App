@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddItem"
+            android:exported="false"
+            android:theme="@style/Theme.FoodNoteApp">
+        </activity>
     </application>
 
 </manifest>
