@@ -61,19 +61,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current
-            if (!fileExists(context, fileName)) {
-                createFile(context, fileName)
+            if (!fileExist(context, fileName)) {
+                fileCreate(context, fileName)
             }
             Tab()
         }
     }
 }
-private fun fileExists(context: Context, fileName: String): Boolean {
+private fun fileExist(context: Context, fileName: String): Boolean {
     val file = File(context.filesDir, fileName)
     return file.exists()
 }
 
-private fun createFile(context: Context, fileName: String) {
+private fun fileCreate(context: Context, fileName: String) {
     val file = File(context.filesDir, fileName)
     file.createNewFile()
 }

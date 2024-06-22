@@ -52,41 +52,35 @@ class AddItem : ComponentActivity() {
                 color = Color.White
             ) {
                 TextField(onSave = { food ->
-                }
-                )
+                })
             }
         }
     }
 }
-fun writeFoodItemToFile(context: Context, food: Food, fileName: String) {
+
+fun fileWrite(context: Context, food: Food, fileName: String) {
     val file = File(context.filesDir, fileName)
-    val foodItemString = "${food.name},${food.price.toString()}\n"
+    val foodItemString = "${food.name},${food.price},${food.type}\n"
     FileOutputStream(file, true).bufferedWriter().use { writer ->
         writer.write(foodItemString)
     }
     println(file.canonicalPath)
 }
 
-enum class FoodType {
-    Breakfast,
-    Lunch,
-    Dinner,
-    Snacks,
-    Drinks,
-    Others
-}
+val foodTypes = listOf("Breakfast", "Lunch", "Dinner", "Snacks", "Drinks", "Others")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextField( onSave: (Food) -> Unit) {
+fun TextField(onSave: (Food) -> Unit) {
     val context = LocalContext.current
-    val activity= context as? Activity
+    val activity = context as? Activity
     var isExpanded by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
-    var type by remember { mutableStateOf(FoodType.Others) }
+    var type by remember { mutableStateOf("") }
 
-    Text(text = "Add Food Items",
+    Text(
+        text = "Add Food Items",
         style = MaterialTheme.typography.headlineLarge,
         fontWeight = FontWeight.ExtraBold,
         color = Color(0xFF74C931),
@@ -96,8 +90,7 @@ fun TextField( onSave: (Food) -> Unit) {
             .fillMaxWidth()
             .padding(top = 40.dp)
     )
-    Box(){
-
+    Box() {
         Column(
             modifier = Modifier
                 .padding(PaddingValues(10.dp))
@@ -116,7 +109,7 @@ fun TextField( onSave: (Food) -> Unit) {
                 )
             )
             OutlinedTextField(
-                modifier = Modifier.padding( bottom = 10.dp),
+                modifier = Modifier.padding(bottom = 10.dp),
                 value = price,
                 onValueChange = { price = it },
                 label = { Text("Enter Price", color = Color(0xFF74C931)) },
@@ -128,16 +121,16 @@ fun TextField( onSave: (Food) -> Unit) {
             ExposedDropdownMenuBox(
                 modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
                 expanded = isExpanded,
-                onExpandedChange = {newValue ->
+                onExpandedChange = { newValue ->
                     isExpanded = newValue
                 }
             ) {
                 OutlinedTextField(
                     modifier = Modifier.menuAnchor(),
-                    value = type.name,
+                    value = type,
                     onValueChange = {},
                     readOnly = true,
-                    label = {Text(text = "Category", color = Color(0xFF74C931))},
+                    label = { Text(text = "Category", color = Color(0xFF74C931)) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
                     },
@@ -150,10 +143,11 @@ fun TextField( onSave: (Food) -> Unit) {
                     expanded = isExpanded,
                     onDismissRequest = { isExpanded = false }
                 ) {
-                    FoodType.values().forEach { selectedOption ->
+                    foodTypes.forEach { selectedOption ->
                         DropdownMenuItem(
-                            text = { Text(selectedOption.name) },
-                            onClick = { type = selectedOption
+                            text = { Text(selectedOption) },
+                            onClick = {
+                                type = selectedOption
                                 isExpanded = false
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -165,17 +159,17 @@ fun TextField( onSave: (Food) -> Unit) {
                 colors = ButtonDefaults.buttonColors(Color(0xFF74C931)),
                 modifier = Modifier.padding(top = 10.dp),
                 onClick = {
-                    if (name.isNotBlank() && price.isNotBlank() && type.name.isNotBlank()) {
+                    if (name.isNotBlank() && price.isNotBlank() && type.isNotBlank()) {
                         val foodItem = Food(
-                            name =name,
+                            name = name,
                             price = price,
                             type = type,
                         )
-                        writeFoodItemToFile(context, foodItem, "Food.txt")
+                        fileWrite(context, foodItem, "Food.txt")
                         onSave(foodItem)
                     }
 
-                    context.startActivity(Intent(context,MainActivity::class.java))
+                    context.startActivity(Intent(context, MainActivity::class.java))
                     activity?.finish()
                 }
             ) {
@@ -186,11 +180,10 @@ fun TextField( onSave: (Food) -> Unit) {
 }
 
 data class Food(
-    val name:String,
-    val price :String,
-    val type : FoodType
+    val name: String,
+    val price: String,
+    val type: String
 )
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
