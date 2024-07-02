@@ -63,7 +63,7 @@ class AddItem : ComponentActivity() {
     }
 }
 
-fun writeFoodItemToFile(context: Context, food: Food, fileName: String) {
+fun fileWrite(context: Context, food: Food, fileName: String) {
     val file = File(context.filesDir, fileName)
     val foodItemString = "${food.name},${food.price.toString()}\n"
     FileOutputStream(file, true).bufferedWriter().use { writer ->
@@ -194,7 +194,7 @@ fun TextField( onSave: (Food) -> Unit) {
                             price = price,
                             type = type,
                         )
-                        writeFoodItemToFile(context, foodItem, "Food-Data.txt")
+                        fileWrite(context, foodItem, "Food-Data.txt")
                         onSave(foodItem)
                     }
 

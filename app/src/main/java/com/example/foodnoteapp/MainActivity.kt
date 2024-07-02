@@ -9,11 +9,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,11 +29,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -40,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -48,11 +56,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import java.io.File
+import kotlin.math.roundToInt
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     private val fileName = "Food-Data.txt"
@@ -73,7 +87,6 @@ class MainActivity : ComponentActivity() {
                 foodItems.value = updatedItems
                 fileWrite(this, updatedItems, fileName)
             })
-
         }
     }
 }
@@ -93,6 +106,7 @@ private fun fileRead(context: Context, fileName: String): List<FoodItem> {
     }
     return foodItems
 }
+
 data class FoodItem(val name: String, val price: Int, val type: String = "")
 
 private fun fileExist(context: Context, fileName: String): Boolean {
@@ -194,7 +208,10 @@ fun Tab(foodItems: List<FoodItem>, onAddItem: (FoodItem) -> Unit    ){
         ){
             Icon(imageVector = Icons.Outlined.Create,
                 contentDescription = null,
-                modifier = Modifier.padding(start = 15.dp).align(Alignment.CenterStart).size(25.dp), tint = Color.White)
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .align(Alignment.CenterStart)
+                    .size(25.dp), tint = Color.White)
             Text(
                 text = "Billify",
                 modifier = Modifier.padding(top = 15.dp, bottom = 15.dp, start = 55.dp),
@@ -203,7 +220,10 @@ fun Tab(foodItems: List<FoodItem>, onAddItem: (FoodItem) -> Unit    ){
             )
             Icon(imageVector = Icons.Filled.List,
                 contentDescription = null,
-                modifier = Modifier.padding(end = 15.dp).align(Alignment.CenterEnd).size(30.dp), tint = Color.White)
+                modifier = Modifier
+                    .padding(end = 15.dp)
+                    .align(Alignment.CenterEnd)
+                    .size(30.dp), tint = Color.White)
         }
         TabRow(
             selectedTabIndex = pagerState.currentPage,
@@ -267,6 +287,184 @@ fun Tab(foodItems: List<FoodItem>, onAddItem: (FoodItem) -> Unit    ){
         ) {
             if (pagerState.currentPage==0){
                 FoodDisplay(foodItems,onAddItem)
+            }
+            else if (pagerState.currentPage==1){
+                FunDisplay()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FunDisplay(){
+    var sliderPosition by remember { mutableFloatStateOf(3F) }
+    var switchClick by remember { mutableFloatStateOf(0F) }
+    var bg_color by remember { mutableStateOf(Color.White) }
+
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .background(bg_color)
+            .padding(30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        Text(text = "Each Person Should Pick a Colour",
+            style = MaterialTheme.typography.headlineLarge,
+            color = Color(0xFF181818),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 30.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 45.dp, top = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.size(15.dp))
+
+        if (sliderPosition == 3F){
+            Image(painter = painterResource(R.drawable.wheel_3),
+                contentDescription = null,)
+        }
+        if (sliderPosition == 4F){
+            Image(painter = painterResource(R.drawable.wheel_4),
+                contentDescription = null,
+            )
+        }
+        if (sliderPosition == 5F){
+            Image(painter = painterResource(R.drawable.wheel_5),
+                contentDescription = null,
+            )
+        }
+        if (sliderPosition == 6F){
+            Image(painter = painterResource(R.drawable.wheel_6),
+                contentDescription = null,
+            )
+        }
+        if (sliderPosition == 7F){
+            Image(painter = painterResource(R.drawable.wheel_7),
+                contentDescription = null,
+            )
+        }
+        if (sliderPosition == 8F){
+            Image(painter = painterResource(R.drawable.wheel_8),
+                contentDescription = null,
+            )
+        }
+
+        Spacer(modifier = Modifier.size(15.dp))
+
+        Slider(value = sliderPosition,
+            onValueChange = {
+                sliderPosition = it.roundToInt().toFloat()
+                switchClick = 0F
+                bg_color = Color.White
+            },
+            colors = SliderDefaults.colors(
+                thumbColor = Color(0xFF74C931),
+                activeTrackColor = Color(0xFF74C931),
+                inactiveTrackColor = colorResource(R.color.purple_200)
+            ),
+            steps = 4,
+            valueRange = 3F..8F,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp, bottom = 10.dp)
+        )
+
+        Text(text = sliderPosition.toInt().toString() + " Persons",
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.headlineLarge,
+            color = Color(0xFF181818),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp, bottom = 10.dp)
+        )
+
+        Button(
+            onClick = {
+                switchClick++ },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF181818)),
+            modifier = Modifier
+                .padding(top = 20.dp, bottom = 10.dp)
+            )
+        {
+            Text(text = "Spin",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+            )
+        }
+        if (switchClick>0) {
+            when (sliderPosition) {
+                3F -> {
+                    var num = Random.nextInt(1, 4)
+                    when(num){
+                        1 -> {bg_color = Color.Blue}
+                        2 -> {bg_color = Color(0xFFE6463A)}
+                        3 -> {bg_color = Color(0xFF4CAF50)}
+                    }
+                }
+                4F -> {
+                    var num = Random.nextInt(1, 5)
+                    when(num){
+                        1 -> {bg_color = Color(0xFF03A9F4)}
+                        2 -> {bg_color = Color(0xFFE6463A)}
+                        3 -> {bg_color = Color(0xFF4CAF50)}
+                        4 -> {bg_color = Color(0xFFFF9800)}
+                    }
+                }
+                5F -> {
+                    var num = Random.nextInt(1, 6)
+                    when(num){
+                        1 -> {bg_color = Color(0xFF03A9F4)}
+                        2 -> {bg_color = Color(0xFFE6463A)}
+                        3 -> {bg_color = Color(0xFF4CAF50)}
+                        4 -> {bg_color = Color(0xFFFF9800)}
+                        5 -> {bg_color = Color(0xFF9C27B0)}
+                    }
+                }
+                6F -> {
+                    var num = Random.nextInt(1, 7)
+                    when(num){
+                        1 -> {bg_color = Color(0xFF03A9F4)}
+                        2 -> {bg_color = Color(0xFFE6463A)}
+                        3 -> {bg_color = Color(0xFF4CAF50)}
+                        4 -> {bg_color = Color(0xFFFF9800)}
+                        5 -> {bg_color = Color(0xFF9C27B0)}
+                        6 -> {bg_color = Color(0xFFFFEB3B)}
+                    }
+                }
+                7F -> {
+                    var num = Random.nextInt(1, 8)
+                    when(num){
+                        1 -> {bg_color = Color(0xFF03A9F4)}
+                        2 -> {bg_color = Color(0xFFE6463A)}
+                        3 -> {bg_color = Color(0xFF4CAF50)}
+                        4 -> {bg_color = Color(0xFFFF9800)}
+                        5 -> {bg_color = Color(0xFF9C27B0)}
+                        6 -> {bg_color = Color(0xFFFFEB3B)}
+                        7 -> {bg_color = Color(0xFFE91E63)}
+                    }
+                }
+                8F -> {
+                    var num = Random.nextInt(1, 9)
+                    when(num){
+                        1 -> {bg_color = Color(0xFF03A9F4)}
+                        2 -> {bg_color = Color(0xFFE6463A)}
+                        3 -> {bg_color = Color(0xFF4CAF50)}
+                        4 -> {bg_color = Color(0xFFFF9800)}
+                        5 -> {bg_color = Color(0xFF9C27B0)}
+                        6 -> {bg_color = Color(0xFFFFEB3B)}
+                        7 -> {bg_color = Color(0xFFE91E63)}
+                        8 -> {bg_color = Color(0xFFCCC26B)
+                        }
+                    }
+                }
             }
         }
     }
