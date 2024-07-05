@@ -33,7 +33,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -295,12 +294,12 @@ fun Tab(foodItems: List<FoodItem>, onAddItem: (FoodItem) -> Unit    ){
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FunDisplay(){
     var sliderPosition by remember { mutableFloatStateOf(3F) }
     var switchClick by remember { mutableFloatStateOf(0F) }
     var bg_color by remember { mutableStateOf(Color.White) }
+    var num by remember { mutableStateOf(0) }
 
     Column (
         modifier = Modifier
@@ -309,6 +308,85 @@ fun FunDisplay(){
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
+
+        @Composable
+        fun colourChoose(num: Int){
+            when(num){
+                1 -> {
+                    bg_color = Color(0xFF03A9F4)
+                    Text(
+                        text = "Blue have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                2 -> {
+                    bg_color = Color(0xFFE6463A)
+                    Text(
+                        text = "Red have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                3 -> {
+                    bg_color = Color(0xFF4CAF50)
+                    Text(
+                        text = "Green have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                4 -> {
+                    bg_color = Color(0xFFFF9800)
+                    Text(
+                        text = "Orange have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                5 -> {
+                    bg_color = Color(0xFF9C27B0)
+                    Text(
+                        text = "Violet have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                6 -> {
+                    bg_color = Color(0xFFFFEB3B)
+                    Text(
+                        text = "Yellow have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                7 -> {
+                    bg_color = Color(0xFFE91E63)
+                    Text(
+                        text = "Rose have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+                8 -> {
+                    bg_color = Color(0xFFCCC26B)
+                    Text(
+                        text = "Pale Yellow have to pay.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+            }
+        }
+
         Text(text = "Each Person Should Pick a Colour",
             style = MaterialTheme.typography.headlineLarge,
             color = Color(0xFF181818),
@@ -399,71 +477,28 @@ fun FunDisplay(){
                 textAlign = TextAlign.Center,
             )
         }
-        if (switchClick>0) {
+
+        num = Random.nextInt(1, sliderPosition.toInt() + 1)
+        
+        if (switchClick==1F) { 
             when (sliderPosition) {
                 3F -> {
-                    var num = Random.nextInt(1, 4)
-                    when(num){
-                        1 -> {bg_color = Color.Blue}
-                        2 -> {bg_color = Color(0xFFE6463A)}
-                        3 -> {bg_color = Color(0xFF4CAF50)}
-                    }
+                    colourChoose(num)
                 }
                 4F -> {
-                    var num = Random.nextInt(1, 5)
-                    when(num){
-                        1 -> {bg_color = Color(0xFF03A9F4)}
-                        2 -> {bg_color = Color(0xFFE6463A)}
-                        3 -> {bg_color = Color(0xFF4CAF50)}
-                        4 -> {bg_color = Color(0xFFFF9800)}
-                    }
+                    colourChoose(num)
                 }
                 5F -> {
-                    var num = Random.nextInt(1, 6)
-                    when(num){
-                        1 -> {bg_color = Color(0xFF03A9F4)}
-                        2 -> {bg_color = Color(0xFFE6463A)}
-                        3 -> {bg_color = Color(0xFF4CAF50)}
-                        4 -> {bg_color = Color(0xFFFF9800)}
-                        5 -> {bg_color = Color(0xFF9C27B0)}
-                    }
+                    colourChoose(num)
                 }
                 6F -> {
-                    var num = Random.nextInt(1, 7)
-                    when(num){
-                        1 -> {bg_color = Color(0xFF03A9F4)}
-                        2 -> {bg_color = Color(0xFFE6463A)}
-                        3 -> {bg_color = Color(0xFF4CAF50)}
-                        4 -> {bg_color = Color(0xFFFF9800)}
-                        5 -> {bg_color = Color(0xFF9C27B0)}
-                        6 -> {bg_color = Color(0xFFFFEB3B)}
-                    }
+                    colourChoose(num)
                 }
                 7F -> {
-                    var num = Random.nextInt(1, 8)
-                    when(num){
-                        1 -> {bg_color = Color(0xFF03A9F4)}
-                        2 -> {bg_color = Color(0xFFE6463A)}
-                        3 -> {bg_color = Color(0xFF4CAF50)}
-                        4 -> {bg_color = Color(0xFFFF9800)}
-                        5 -> {bg_color = Color(0xFF9C27B0)}
-                        6 -> {bg_color = Color(0xFFFFEB3B)}
-                        7 -> {bg_color = Color(0xFFE91E63)}
-                    }
+                    colourChoose(num)
                 }
                 8F -> {
-                    var num = Random.nextInt(1, 9)
-                    when(num){
-                        1 -> {bg_color = Color(0xFF03A9F4)}
-                        2 -> {bg_color = Color(0xFFE6463A)}
-                        3 -> {bg_color = Color(0xFF4CAF50)}
-                        4 -> {bg_color = Color(0xFFFF9800)}
-                        5 -> {bg_color = Color(0xFF9C27B0)}
-                        6 -> {bg_color = Color(0xFFFFEB3B)}
-                        7 -> {bg_color = Color(0xFFE91E63)}
-                        8 -> {bg_color = Color(0xFFCCC26B)
-                        }
-                    }
+                    colourChoose(num)
                 }
             }
         }
