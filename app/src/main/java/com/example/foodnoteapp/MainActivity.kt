@@ -397,7 +397,7 @@ fun FunDisplay(){
                 .fillMaxWidth()
                 .padding(bottom = 45.dp, top = 20.dp)
         )
-git
+gitpu
         Spacer(modifier = Modifier.size(15.dp))
 
         if (sliderPosition == 3F){
